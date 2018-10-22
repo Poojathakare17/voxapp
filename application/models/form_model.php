@@ -59,5 +59,49 @@ $return[$row->id]=$row->name;
 }
 return $return;
 }
+public function submitContactForm($name,$email,$company,$phone,$message,$file,$tickettype)
+{
+    $data=array("name" => $name,"email" => $email,"company" => $company,"phone" => $phone,"message" => $message,"tickettype" => $tickettype,"file" => $file);
+    $query=$this->db->insert( "contact", $data );
+    $id=$this->db->insert_id();
+        //send email
+        $email   = "support@voxpopulime.com";
+        $subject = "Support request from ".$company;
+        $msg = '<p>Name : '.$name.'</p><p>Email : '.$email.'</p><p>Company : '.$company.'</p><p>Ticket type : '.$tickettype.'</p><p>Message : '.$message.'</p>';
+        send_mail($email,$subject,$msg);
+        function send_mail($email,$subject,$msg) {
+        $api_key="key-577219c50a48fc187b166aa96a949dda";/* Api Key got from https://mailgun.com/cp/my_account */
+        $domain ="amanfiroz.com";/* Domain Name you given to Mailgun */
+        $parameters = array('from' => 'Voxapp <no-reply@voxmobileapp.com>',
+            'to' => $email,
+            'subject' => $subject,
+            'html' => $msg,
+            'attachment[1]' => curl_file_create($filename, 'application/pdf', 'example.pdf'));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, 'api:'.$api_key);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data'));
+        curl_setopt($ch, CURLOPT_URL, 'https://api.mailgun.net/v2/'.$domain.'/messages');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+            'from' => 'Voxapp <no-reply@voxmobileapp.com>',
+            'to' => $email,
+            'subject' => $subject,
+            'html' => $msg
+        ));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        //email sent
+    $obj = new stdClass();
+    if(!$query){
+        $obj ->value=false;
+    }
+    else{
+        $obj ->value=true;
+    }
+    return  $obj;
+}
+}
 }
 ?>

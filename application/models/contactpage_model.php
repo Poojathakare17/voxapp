@@ -20,7 +20,7 @@ $query=$this->db->get("voxapp_contactpage")->row();
 return $query;
 }
 function getsinglecontactpage($id){
-$this->db->where("id",$id);
+$this->db->where("id",1);
 $query=$this->db->get("voxapp_contactpage")->row();
 return $query;
 }

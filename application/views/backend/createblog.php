@@ -34,11 +34,27 @@
 </div>
 </div>
 <div class="row">
-<div class="input-field col s6">
-<label for="Image">Image</label>
-<input type="text" id="Image" name="image" value='<?php echo set_value('image');?>'>
-</div>
-</div>
+			<div class="file-field input-field col m6 s12">
+				<div class="btn blue darken-4">
+					<span>Image</span>
+					<input name="image" type="file" multiple>
+				</div>
+				<div class="file-path-wrapper">
+					<input class="file-path validate" type="text" placeholder="Upload one or more files" value="<?php echo set_value('image');?>">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="file-field input-field col m6 s12">
+				<div class="btn blue darken-4">
+					<span>Logo Image</span>
+					<input name="logoimage" type="file" multiple>
+				</div>
+				<div class="file-path-wrapper">
+					<input class="file-path validate" type="text" placeholder="Upload one or more files" value="<?php echo set_value('logoimage');?>">
+				</div>
+			</div>
+		</div>
 <div class="row">
 <div class="col s12 m6">
 <button type="submit" class="btn btn-primary waves-effect waves-light blue darken-4">Save</button>

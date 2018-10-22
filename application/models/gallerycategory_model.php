@@ -59,5 +59,17 @@ $return[$row->id]=$row->name;
 }
 return $return;
 }
+
+public function getAllGalleryImages(){
+        $query=$this->db->query("SELECT `id`, `name`, `image` FROM `voxapp_gallerycategory` WHERE `status`=1 ORDER BY `order` DESC")->result();
+        foreach($query as $row){
+            $row->galleryimages=$this->db->query("SELECT `id`, `image` FROM `voxapp_gallery` WHERE `status`=1 AND `gallerycategory` = '$row->id' ORDER BY `order` DESC")->result();
+        }
+        if($query){
+            return $query;
+        } else{
+            return false;
+        }
+}
 }
 ?>

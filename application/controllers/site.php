@@ -620,6 +620,7 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="createslider";
 $data["title"]="Create slider";
+$data["status"]=$this->user_model->getstatusdropdown();
 $this->load->view("template",$data);
 }
 public function createslidersubmit() 
@@ -634,6 +635,7 @@ if($this->form_validation->run()==FALSE)
 {
 $data["alerterror"]=validation_errors();
 $data["page"]="createslider";
+$data["status"]=$this->user_model->getstatusdropdown();
 $data["title"]="Create slider";
 $this->load->view("template",$data);
 }
@@ -643,7 +645,35 @@ $id=$this->input->get_post("id");
 $name=$this->input->get_post("name");
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
 if($this->slider_model->create($name,$order,$status,$image)==0)
 $data["alerterror"]="New slider could not be created.";
 else
@@ -658,6 +688,7 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="editslider";
 $data["title"]="Edit slider";
+$data["status"]=$this->user_model->getstatusdropdown();
 $data["before"]=$this->slider_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
 }
@@ -674,6 +705,7 @@ if($this->form_validation->run()==FALSE)
 {
 $data["alerterror"]=validation_errors();
 $data["page"]="editslider";
+$data["status"]=$this->user_model->getstatusdropdown();
 $data["title"]="Edit slider";
 $data["before"]=$this->slider_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
@@ -685,6 +717,35 @@ $name=$this->input->get_post("name");
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 $image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "image";
+$image = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $image = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $image = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
 if($this->slider_model->edit($id,$name,$order,$status,$image)==0)
 $data["alerterror"]="New slider could not be Updated.";
 else
@@ -782,6 +843,7 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="createfeatures";
 $data["title"]="Create features";
+$data['status'] = $this->user_model->getstatusdropdown();
 $this->load->view("template",$data);
 }
 public function createfeaturessubmit() 
@@ -800,6 +862,7 @@ if($this->form_validation->run()==FALSE)
 {
 $data["alerterror"]=validation_errors();
 $data["page"]="createfeatures";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["title"]="Create features";
 $this->load->view("template",$data);
 }
@@ -812,8 +875,58 @@ $quote=$this->input->get_post("quote");
 $status=$this->input->get_post("status");
 $order=$this->input->get_post("order");
 $text=$this->input->get_post("text");
-$banner=$this->input->get_post("banner");
-$image=$this->input->get_post("image");
+
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
+            $filename = "banner";
+            $banner = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $banner = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    
+                } else {
+                    $banner = $this->image_lib->dest_image;
+                    
+                }
+            }
 if($this->features_model->create($title,$subtitle,$quote,$status,$order,$text,$banner,$image)==0)
 $data["alerterror"]="New features could not be created.";
 else
@@ -827,6 +940,7 @@ public function editfeatures()
 $access=array("1");
 $this->checkaccess($access);
 $data["page"]="editfeatures";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["title"]="Edit features";
 $data["before"]=$this->features_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
@@ -848,6 +962,7 @@ if($this->form_validation->run()==FALSE)
 {
 $data["alerterror"]=validation_errors();
 $data["page"]="editfeatures";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["title"]="Edit features";
 $data["before"]=$this->features_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
@@ -861,8 +976,65 @@ $quote=$this->input->get_post("quote");
 $status=$this->input->get_post("status");
 $order=$this->input->get_post("order");
 $text=$this->input->get_post("text");
-$banner=$this->input->get_post("banner");
-$image=$this->input->get_post("image");
+// $banner=$this->input->get_post("banner");
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "banner";
+            $banner = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $banner = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $banner = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "image";
+$image = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $image = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $image = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
 if($this->features_model->edit($id,$title,$subtitle,$quote,$status,$order,$text,$banner,$image)==0)
 $data["alerterror"]="New features could not be Updated.";
 else
@@ -1238,10 +1410,10 @@ $elements[6]->sort="1";
 $elements[6]->header="Technology";
 $elements[6]->alias="tect";
 $elements[7]=new stdClass();
-$elements[7]->field="`voxapp_client`.`banner`";
+$elements[7]->field="`voxapp_client`.`image`";
 $elements[7]->sort="1";
-$elements[7]->header="Banner";
-$elements[7]->alias="banner";
+$elements[7]->header="Image";
+$elements[7]->alias="image";
 $search=$this->input->get_post("search");
 $pageno=$this->input->get_post("pageno");
 $orderby=$this->input->get_post("orderby");
@@ -1295,8 +1467,36 @@ $year=$this->input->get_post("year");
 $media=$this->input->get_post("media");
 $clientusp=$this->input->get_post("clientusp");
 $tect=$this->input->get_post("tect");
-$banner=$this->input->get_post("banner");
-if($this->client_model->create($projectname,$title,$year,$media,$clientusp,$tect,$banner)==0)
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
+if($this->client_model->create($projectname,$title,$year,$media,$clientusp,$tect,$image)==0)
 $data["alerterror"]="New client could not be created.";
 else
 $data["alertsuccess"]="client created Successfully.";
@@ -1342,8 +1542,33 @@ $year=$this->input->get_post("year");
 $media=$this->input->get_post("media");
 $clientusp=$this->input->get_post("clientusp");
 $tect=$this->input->get_post("tect");
-$banner=$this->input->get_post("banner");
-if($this->client_model->edit($id,$projectname,$title,$year,$media,$clientusp,$tect,$banner)==0)
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    $image = $this->image_lib->dest_image;
+                    
+                }
+            }
+if($this->client_model->edit($id,$projectname,$title,$year,$media,$clientusp,$tect,$image)==0)
 $data["alerterror"]="New client could not be Updated.";
 else
 $data["alertsuccess"]="client Updated Successfully.";
@@ -1365,6 +1590,7 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="viewclientimage";
 $data["base_url"]=site_url("site/viewclientimagejson");
+$data['clientid'] = $this->client_model->getdropdown();
 $data["title"]="View clientimage";
 $this->load->view("template",$data);
 }
@@ -1392,7 +1618,7 @@ $elements[3]->sort="1";
 $elements[3]->header="Status";
 $elements[3]->alias="status";
 $elements[4]=new stdClass();
-$elements[4]->field="`voxapp_clientimage`.`clientid`";
+$elements[4]->field="`voxapp_client`.`projectname`";
 $elements[4]->sort="1";
 $elements[4]->header="Client id";
 $elements[4]->alias="clientid";
@@ -1410,7 +1636,7 @@ if($orderby=="")
 $orderby="id";
 $orderorder="ASC";
 }
-$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_clientimage`");
+$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_clientimage` LEFT JOIN `voxapp_client` ON `voxapp_clientimage`.`clientid`=`voxapp_client`.`id`");
 $this->load->view("json",$data);
 }
 
@@ -1419,6 +1645,8 @@ public function createclientimage()
 $access=array("1");
 $this->checkaccess($access);
 $data["page"]="createclientimage";
+$data['status'] = $this->user_model->getstatusdropdown();
+$data['clientid'] = $this->client_model->getdropdown();
 $data["title"]="Create clientimage";
 $this->load->view("template",$data);
 }
@@ -1434,13 +1662,43 @@ if($this->form_validation->run()==FALSE)
 {
 $data["alerterror"]=validation_errors();
 $data["page"]="createclientimage";
+$data['status'] = $this->user_model->getstatusdropdown();
+$data['clientid'] = $this->client_model->getdropdown();
 $data["title"]="Create clientimage";
 $this->load->view("template",$data);
 }
 else
 {
 $id=$this->input->get_post("id");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 $clientid=$this->input->get_post("clientid");
@@ -1457,6 +1715,8 @@ public function editclientimage()
 $access=array("1");
 $this->checkaccess($access);
 $data["page"]="editclientimage";
+$data['status'] = $this->user_model->getstatusdropdown();
+$data['clientid'] = $this->client_model->getdropdown();
 $data["title"]="Edit clientimage";
 $data["before"]=$this->clientimage_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
@@ -1475,13 +1735,43 @@ if($this->form_validation->run()==FALSE)
 $data["alerterror"]=validation_errors();
 $data["page"]="editclientimage";
 $data["title"]="Edit clientimage";
+$data['status'] = $this->user_model->getstatusdropdown();
+$data['clientid'] = $this->client_model->getdropdown();
 $data["before"]=$this->clientimage_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
 }
 else
 {
 $id=$this->input->get_post("id");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "image";
+$image = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $image = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $image = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 $clientid=$this->input->get_post("clientid");
@@ -1571,6 +1861,7 @@ public function createblog()
 $access=array("1");
 $this->checkaccess($access);
 $data["page"]="createblog";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["title"]="Create blog";
 $this->load->view("template",$data);
 }
@@ -1589,6 +1880,7 @@ if($this->form_validation->run()==FALSE)
 $data["alerterror"]=validation_errors();
 $data["page"]="createblog";
 $data["title"]="Create blog";
+$data['status'] = $this->user_model->getstatusdropdown();
 $this->load->view("template",$data);
 }
 else
@@ -1599,8 +1891,65 @@ $date=$this->input->get_post("date");
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 $text=$this->input->get_post("text");
-$image=$this->input->get_post("image");
-if($this->blog_model->create($name,$date,$order,$status,$text,$image)==0)
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
+            $config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "logoimage";
+            $logoimage = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $logoimage = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $logoimage = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
+if($this->blog_model->create($name,$date,$order,$status,$text,$image,$logoimage)==0)
 $data["alerterror"]="New blog could not be created.";
 else
 $data["alertsuccess"]="blog created Successfully.";
@@ -1613,6 +1962,7 @@ public function editblog()
 $access=array("1");
 $this->checkaccess($access);
 $data["page"]="editblog";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["title"]="Edit blog";
 $data["before"]=$this->blog_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
@@ -1632,6 +1982,7 @@ if($this->form_validation->run()==FALSE)
 {
 $data["alerterror"]=validation_errors();
 $data["page"]="editblog";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["title"]="Edit blog";
 $data["before"]=$this->blog_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
@@ -1644,8 +1995,65 @@ $date=$this->input->get_post("date");
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 $text=$this->input->get_post("text");
-$image=$this->input->get_post("image");
-if($this->blog_model->edit($id,$name,$date,$order,$status,$text,$image)==0)
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "image";
+$image = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $image = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $image = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "logoimage";
+$logoimage = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $logoimage = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $logoimage = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
+if($this->blog_model->edit($id,$name,$date,$order,$status,$text,$image,$logoimage)==0)
 $data["alerterror"]="New blog could not be Updated.";
 else
 $data["alertsuccess"]="blog Updated Successfully.";
@@ -1749,7 +2157,35 @@ else
 {
 $id=$this->input->get_post("id");
 $name=$this->input->get_post("name");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
 $designation=$this->input->get_post("designation");
 $rating=$this->input->get_post("rating");
 $text=$this->input->get_post("text");
@@ -1792,7 +2228,35 @@ else
 {
 $id=$this->input->get_post("id");
 $name=$this->input->get_post("name");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "image";
+$image = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $image = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $image = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
 $designation=$this->input->get_post("designation");
 $rating=$this->input->get_post("rating");
 $text=$this->input->get_post("text");
@@ -1873,6 +2337,7 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="creategallerycategory";
 $data["title"]="Create gallerycategory";
+$data['status'] = $this->user_model->getstatusdropdown();
 $this->load->view("template",$data);
 }
 public function creategallerycategorysubmit() 
@@ -1888,13 +2353,42 @@ if($this->form_validation->run()==FALSE)
 $data["alerterror"]=validation_errors();
 $data["page"]="creategallerycategory";
 $data["title"]="Create gallerycategory";
+$data['status'] = $this->user_model->getstatusdropdown();
 $this->load->view("template",$data);
 }
 else
 {
 $id=$this->input->get_post("id");
 $name=$this->input->get_post("name");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 if($this->gallerycategory_model->create($name,$image,$order,$status)==0)
@@ -1911,6 +2405,7 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="editgallerycategory";
 $data["title"]="Edit gallerycategory";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["before"]=$this->gallerycategory_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
 }
@@ -1928,6 +2423,7 @@ if($this->form_validation->run()==FALSE)
 $data["alerterror"]=validation_errors();
 $data["page"]="editgallerycategory";
 $data["title"]="Edit gallerycategory";
+$data['status'] = $this->user_model->getstatusdropdown();
 $data["before"]=$this->gallerycategory_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
 }
@@ -1935,7 +2431,35 @@ else
 {
 $id=$this->input->get_post("id");
 $name=$this->input->get_post("name");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "image";
+$image = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $image = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $image = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 if($this->gallerycategory_model->edit($id,$name,$image,$order,$status)==0)
@@ -1960,6 +2484,7 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="viewgallery";
 $data["base_url"]=site_url("site/viewgalleryjson");
+$data['gallerycategory'] = $this->gallerycategory_model->getdropdown();
 $data["title"]="View gallery";
 $this->load->view("template",$data);
 }
@@ -1987,7 +2512,7 @@ $elements[3]->sort="1";
 $elements[3]->header="Status";
 $elements[3]->alias="status";
 $elements[4]=new stdClass();
-$elements[4]->field="`voxapp_gallery`.`gallerycategory`";
+$elements[4]->field="`voxapp_gallerycategory`.`name`";
 $elements[4]->sort="1";
 $elements[4]->header="Gallery Category";
 $elements[4]->alias="gallerycategory";
@@ -2005,7 +2530,7 @@ if($orderby=="")
 $orderby="id";
 $orderorder="ASC";
 }
-$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_gallery`");
+$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_gallery` LEFT JOIN `voxapp_gallerycategory` ON `voxapp_gallerycategory`.`id`=`voxapp_gallery`.`gallerycategory`");
 $this->load->view("json",$data);
 }
 
@@ -2014,7 +2539,9 @@ public function creategallery()
 $access=array("1");
 $this->checkaccess($access);
 $data["page"]="creategallery";
+$data['gallerycategory'] = $this->gallerycategory_model->getdropdown();
 $data["title"]="Create gallery";
+$data['status'] = $this->user_model->getstatusdropdown();
 $this->load->view("template",$data);
 }
 public function creategallerysubmit() 
@@ -2029,13 +2556,43 @@ if($this->form_validation->run()==FALSE)
 {
 $data["alerterror"]=validation_errors();
 $data["page"]="creategallery";
+$data['status'] = $this->user_model->getstatusdropdown();
+$data['gallerycategory'] = $this->gallerycategory_model->getdropdown();
 $data["title"]="Create gallery";
 $this->load->view("template",$data);
 }
 else
 {
 $id=$this->input->get_post("id");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $this->load->library('upload', $config);
+            $filename = "image";
+            $image = "";
+            if ($this->upload->do_upload($filename)) {
+                $uploaddata = $this->upload->data();
+                $image = $uploaddata['file_name'];
+                $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+                $config_r['maintain_ratio'] = TRUE;
+                $config_t['create_thumb'] = FALSE; ///add this
+                $config_r['width'] = 800;
+                $config_r['height'] = 800;
+                $config_r['quality'] = 100;
+                //end of configs
+                $this->load->library('image_lib', $config_r);
+                $this->image_lib->initialize($config_r);
+                if (!$this->image_lib->resize()) {
+                    echo "Failed." . $this->image_lib->display_errors();
+                    //return false;
+                    
+                } else {
+                    //print_r($this->image_lib->dest_image);
+                    //dest_image
+                    $image = $this->image_lib->dest_image;
+                    //return false;
+                    
+                }
+            }
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 $gallerycategory=$this->input->get_post("gallerycategory");
@@ -2053,6 +2610,8 @@ $access=array("1");
 $this->checkaccess($access);
 $data["page"]="editgallery";
 $data["title"]="Edit gallery";
+$data['status'] = $this->user_model->getstatusdropdown();
+$data['gallerycategory'] = $this->gallerycategory_model->getdropdown();
 $data["before"]=$this->gallery_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
 }
@@ -2070,13 +2629,43 @@ if($this->form_validation->run()==FALSE)
 $data["alerterror"]=validation_errors();
 $data["page"]="editgallery";
 $data["title"]="Edit gallery";
+$data['status'] = $this->user_model->getstatusdropdown();
+$data['gallerycategory'] = $this->gallerycategory_model->getdropdown();
 $data["before"]=$this->gallery_model->beforeedit($this->input->get("id"));
 $this->load->view("template",$data);
 }
 else
 {
 $id=$this->input->get_post("id");
-$image=$this->input->get_post("image");
+$config['upload_path'] = './uploads/';
+$config['allowed_types'] = 'gif|jpg|png|jpeg';
+$this->load->library('upload', $config);
+$filename = "image";
+$image = "";
+if ($this->upload->do_upload($filename)) {
+    $uploaddata = $this->upload->data();
+    $image = $uploaddata['file_name'];
+    $config_r['source_image'] = './uploads/' . $uploaddata['file_name'];
+    $config_r['maintain_ratio'] = TRUE;
+    $config_t['create_thumb'] = FALSE; ///add this
+    $config_r['width'] = 800;
+    $config_r['height'] = 800;
+    $config_r['quality'] = 100;
+    //end of configs
+    $this->load->library('image_lib', $config_r);
+    $this->image_lib->initialize($config_r);
+    if (!$this->image_lib->resize()) {
+        echo "Failed." . $this->image_lib->display_errors();
+        //return false;
+        
+    } else {
+        //print_r($this->image_lib->dest_image);
+        //dest_image
+        $image = $this->image_lib->dest_image;
+        //return false;
+        
+    }
+}
 $order=$this->input->get_post("order");
 $status=$this->input->get_post("status");
 $gallerycategory=$this->input->get_post("gallerycategory");

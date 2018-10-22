@@ -228,15 +228,12 @@ class User_model extends CI_Model
 	}
     public function getstatusdropdown()
 	{
-		$query=$this->db->query("SELECT * FROM `statuses`  ORDER BY `id` ASC")->result();
-		$return=array(
-		);
-		foreach($query as $row)
-		{
-			$return[$row->id]=$row->name;
-		}
-		
-		return $return;
+		$status= array(
+			"" => "Choose Status",
+			"1" => "Enable",
+			"2" => "Disable"
+		   );
+	   return $status;
 	}
     
 	function changestatus($id)

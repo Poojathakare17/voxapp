@@ -4,32 +4,32 @@
 </div>
 <form class='col s12' method='post' action='<?php echo site_url("site/creategallerysubmit");?>' enctype= 'multipart/form-data'>
 <div class="row">
-<div class="file-field input-field col s12 m6">
-<div class="btn blue darken-4">
-<span>Image</span>
-<input type="file" name="image" multiple>
-</div>
-<div class="file-path-wrapper">
-<input class="file-path validate" type="text" placeholder="Upload one or more files" value='<?php echo set_value('image');?>'>
-</div>
-</div>
-</div>
+			<div class="file-field input-field col m6 s12">
+				<div class="btn blue darken-4">
+					<span>Image</span>
+					<input name="image" type="file" multiple>
+				</div>
+				<div class="file-path-wrapper">
+					<input class="file-path validate" type="text" placeholder="Upload one or more files" value="<?php echo set_value('image');?>">
+				</div>
+			</div>
+		</div>
 <div class="row">
 <div class="input-field col s6">
 <label for="Order">Order</label>
 <input type="text" id="Order" name="order" value='<?php echo set_value('order');?>'>
 </div>
 </div>
-<div class="row">
-<div class="input-field col s6">
-<label for="Status">Status</label>
-<input type="text" id="Status" name="status" value='<?php echo set_value('status');?>'>
+<div class=" row">
+<div class=" input-field col s6">
+<?php echo form_dropdown("status",$status,set_value('status'));?>
+<label>Status</label>
 </div>
 </div>
-<div class="row">
-<div class="input-field col s6">
-<label for="Gallery Category">Gallery Category</label>
-<input type="text" id="Gallery Category" name="gallerycategory" value='<?php echo set_value('gallerycategory');?>'>
+<div class=" row">
+<div class=" input-field col s6">
+<?php echo form_dropdown("gallerycategory",$gallerycategory,set_value('gallerycategory'));?>
+<label>Gallery Category</label>
 </div>
 </div>
 <div class="row">

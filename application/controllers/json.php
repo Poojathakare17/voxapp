@@ -1,6 +1,6 @@
 <?php if ( ! defined("BASEPATH")) exit("No direct script access allowed");
 class Json extends CI_Controller 
-{function getallslider()
+{function getAllSliders()
 {
 $elements=array();
 $elements[0]=new stdClass();
@@ -9,33 +9,17 @@ $elements[0]->sort="1";
 $elements[0]->header="ID";
 $elements[0]->alias="id";
 
-$elements=array();
 $elements[1]=new stdClass();
 $elements[1]->field="`voxapp_slider`.`name`";
 $elements[1]->sort="1";
 $elements[1]->header="Name";
 $elements[1]->alias="name";
 
-$elements=array();
 $elements[2]=new stdClass();
-$elements[2]->field="`voxapp_slider`.`order`";
+$elements[2]->field="`voxapp_slider`.`image`";
 $elements[2]->sort="1";
-$elements[2]->header="Order";
-$elements[2]->alias="order";
-
-$elements=array();
-$elements[3]=new stdClass();
-$elements[3]->field="`voxapp_slider`.`status`";
-$elements[3]->sort="1";
-$elements[3]->header="Status";
-$elements[3]->alias="status";
-
-$elements=array();
-$elements[4]=new stdClass();
-$elements[4]->field="`voxapp_slider`.`image`";
-$elements[4]->sort="1";
-$elements[4]->header="Image";
-$elements[4]->alias="image";
+$elements[2]->header="Image";
+$elements[2]->alias="image";
 
 $search=$this->input->get_post("search");
 $pageno=$this->input->get_post("pageno");
@@ -47,10 +31,11 @@ if($maxrow=="")
 }
 if($orderby=="")
 {
-$orderby="id";
-$orderorder="ASC";
+$orderby="order";
+$orderorder="DESC";
 }
-$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_slider`");
+$data["message1"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_slider`","WHERE `status` =1");
+$data["message"]=$data["message1"]->queryresult;
 $this->load->view("json",$data);
 }
 public function getsingleslider()
@@ -59,7 +44,7 @@ $id=$this->input->get_post("id");
 $data["message"]=$this->slider_model->getsingleslider($id);
 $this->load->view("json",$data);
 }
-function getallfeatures()
+function getAllFeatures()
 {
 $elements=array();
 $elements[0]=new stdClass();
@@ -68,56 +53,48 @@ $elements[0]->sort="1";
 $elements[0]->header="ID";
 $elements[0]->alias="id";
 
-$elements=array();
 $elements[1]=new stdClass();
 $elements[1]->field="`voxapp_features`.`title`";
 $elements[1]->sort="1";
 $elements[1]->header="Title";
 $elements[1]->alias="title";
 
-$elements=array();
 $elements[2]=new stdClass();
 $elements[2]->field="`voxapp_features`.`subtitle`";
 $elements[2]->sort="1";
 $elements[2]->header="Sub Title";
 $elements[2]->alias="subtitle";
 
-$elements=array();
 $elements[3]=new stdClass();
 $elements[3]->field="`voxapp_features`.`quote`";
 $elements[3]->sort="1";
 $elements[3]->header="Quote";
 $elements[3]->alias="quote";
 
-$elements=array();
 $elements[4]=new stdClass();
 $elements[4]->field="`voxapp_features`.`status`";
 $elements[4]->sort="1";
 $elements[4]->header="Status";
 $elements[4]->alias="status";
 
-$elements=array();
 $elements[5]=new stdClass();
 $elements[5]->field="`voxapp_features`.`order`";
 $elements[5]->sort="1";
 $elements[5]->header="Order";
 $elements[5]->alias="order";
 
-$elements=array();
 $elements[6]=new stdClass();
 $elements[6]->field="`voxapp_features`.`text`";
 $elements[6]->sort="1";
 $elements[6]->header="Text";
 $elements[6]->alias="text";
 
-$elements=array();
 $elements[7]=new stdClass();
 $elements[7]->field="`voxapp_features`.`banner`";
 $elements[7]->sort="1";
 $elements[7]->header="Banner";
 $elements[7]->alias="banner";
 
-$elements=array();
 $elements[8]=new stdClass();
 $elements[8]->field="`voxapp_features`.`image`";
 $elements[8]->sort="1";
@@ -137,7 +114,8 @@ if($orderby=="")
 $orderby="id";
 $orderorder="ASC";
 }
-$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_features`");
+$data["message1"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_features`");
+$data["message"]=$data["message1"]->queryresult;
 $this->load->view("json",$data);
 }
 public function getsinglefeatures()
@@ -294,49 +272,42 @@ $elements[0]->sort="1";
 $elements[0]->header="ID";
 $elements[0]->alias="id";
 
-$elements=array();
 $elements[1]=new stdClass();
 $elements[1]->field="`voxapp_client`.`projectname`";
 $elements[1]->sort="1";
 $elements[1]->header="Project Name";
 $elements[1]->alias="projectname";
 
-$elements=array();
 $elements[2]=new stdClass();
 $elements[2]->field="`voxapp_client`.`title`";
 $elements[2]->sort="1";
 $elements[2]->header="Title";
 $elements[2]->alias="title";
 
-$elements=array();
 $elements[3]=new stdClass();
 $elements[3]->field="`voxapp_client`.`year`";
 $elements[3]->sort="1";
 $elements[3]->header="Year";
 $elements[3]->alias="year";
 
-$elements=array();
 $elements[4]=new stdClass();
 $elements[4]->field="`voxapp_client`.`media`";
 $elements[4]->sort="1";
 $elements[4]->header="Media";
 $elements[4]->alias="media";
 
-$elements=array();
 $elements[5]=new stdClass();
 $elements[5]->field="`voxapp_client`.`clientusp`";
 $elements[5]->sort="1";
 $elements[5]->header="Client usp";
 $elements[5]->alias="clientusp";
 
-$elements=array();
 $elements[6]=new stdClass();
 $elements[6]->field="`voxapp_client`.`tect`";
 $elements[6]->sort="1";
 $elements[6]->header="Technology";
 $elements[6]->alias="tect";
 
-$elements=array();
 $elements[7]=new stdClass();
 $elements[7]->field="`voxapp_client`.`banner`";
 $elements[7]->sort="1";
@@ -433,47 +404,47 @@ $elements[0]->sort="1";
 $elements[0]->header="ID";
 $elements[0]->alias="id";
 
-$elements=array();
 $elements[1]=new stdClass();
 $elements[1]->field="`voxapp_blog`.`name`";
 $elements[1]->sort="1";
 $elements[1]->header="Name";
 $elements[1]->alias="name";
 
-$elements=array();
 $elements[2]=new stdClass();
 $elements[2]->field="`voxapp_blog`.`date`";
 $elements[2]->sort="1";
 $elements[2]->header="Date";
 $elements[2]->alias="date";
 
-$elements=array();
 $elements[3]=new stdClass();
 $elements[3]->field="`voxapp_blog`.`order`";
 $elements[3]->sort="1";
 $elements[3]->header="Order";
 $elements[3]->alias="order";
 
-$elements=array();
 $elements[4]=new stdClass();
 $elements[4]->field="`voxapp_blog`.`status`";
 $elements[4]->sort="1";
 $elements[4]->header="Status";
 $elements[4]->alias="status";
 
-$elements=array();
 $elements[5]=new stdClass();
 $elements[5]->field="`voxapp_blog`.`text`";
 $elements[5]->sort="1";
 $elements[5]->header="Text";
 $elements[5]->alias="text";
 
-$elements=array();
 $elements[6]=new stdClass();
 $elements[6]->field="`voxapp_blog`.`image`";
 $elements[6]->sort="1";
 $elements[6]->header="Image";
 $elements[6]->alias="image";
+
+$elements[7]=new stdClass();
+$elements[7]->field="`voxapp_blog`.`logoimage`";
+$elements[7]->sort="1";
+$elements[7]->header="Logo image";
+$elements[7]->alias="logoimage";
 
 $search=$this->input->get_post("search");
 $pageno=$this->input->get_post("pageno");
@@ -488,7 +459,8 @@ if($orderby=="")
 $orderby="id";
 $orderorder="ASC";
 }
-$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_blog`");
+$data["message1"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_blog`");
+$data["message"]=$data["message1"]->queryresult;
 $this->load->view("json",$data);
 }
 public function getsingleblog()
@@ -497,7 +469,7 @@ $id=$this->input->get_post("id");
 $data["message"]=$this->blog_model->getsingleblog($id);
 $this->load->view("json",$data);
 }
-function getalltestimonials()
+function getAllTestimonials()
 {
 $elements=array();
 $elements[0]=new stdClass();
@@ -506,35 +478,30 @@ $elements[0]->sort="1";
 $elements[0]->header="ID";
 $elements[0]->alias="id";
 
-$elements=array();
 $elements[1]=new stdClass();
 $elements[1]->field="`voxapp_testimonials`.`name`";
 $elements[1]->sort="1";
 $elements[1]->header="Name";
 $elements[1]->alias="name";
 
-$elements=array();
 $elements[2]=new stdClass();
 $elements[2]->field="`voxapp_testimonials`.`image`";
 $elements[2]->sort="1";
 $elements[2]->header="Image";
 $elements[2]->alias="image";
 
-$elements=array();
 $elements[3]=new stdClass();
 $elements[3]->field="`voxapp_testimonials`.`designation`";
 $elements[3]->sort="1";
 $elements[3]->header="Designation";
 $elements[3]->alias="designation";
 
-$elements=array();
 $elements[4]=new stdClass();
 $elements[4]->field="`voxapp_testimonials`.`rating`";
 $elements[4]->sort="1";
 $elements[4]->header="Rating";
 $elements[4]->alias="rating";
 
-$elements=array();
 $elements[5]=new stdClass();
 $elements[5]->field="`voxapp_testimonials`.`text`";
 $elements[5]->sort="1";
@@ -554,7 +521,8 @@ if($orderby=="")
 $orderby="id";
 $orderorder="ASC";
 }
-$data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_testimonials`");
+$data["message1"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `voxapp_testimonials`");
+$data["message"]=$data["message1"]->queryresult;
 $this->load->view("json",$data);
 }
 public function getsingletestimonials()
@@ -680,5 +648,73 @@ public function getsinglegallery()
 $id=$this->input->get_post("id");
 $data["message"]=$this->gallery_model->getsinglegallery($id);
 $this->load->view("json",$data);
+}
+public function fileUpload() {
+    $date = new DateTime();
+      $imageName = "image-".rand(0, 100000)."-".$date->getTimestamp().".jpg";
+      if(move_uploaded_file($_FILES["file"]["tmp_name"], "./uploads/".$imageName)){
+             $data["message"]=$imageName;
+              $this->load->view("json",$data);
+      }else{
+          $data["message"]=false;
+              $this->load->view("json",$data);
+      }
+    //     $date = new DateTime();
+    //     $config['upload_path'] = './uploads/';
+    //     $config['allowed_types'] = 'gif|jpg|png|jpeg';
+    //     $config['max_size']	= '10000000';
+    //     $config['overwrite']	= true;
+    //     $config['file_name']	= "image-".rand(0, 100000).$date;
+    //     $this->load->library('upload', $config);
+    //     if (  $this->upload->do_upload("file"))
+    //     {
+    //         $uploaddata = $this->upload->data();
+    //         $image=$uploaddata['file_name'];
+    //         $data["message"]=$image;
+    //         $this->load->view("json",$data);
+    //     }
+    //    else
+    //     {
+    //         $data["message"]=$this->upload->display_errors();;
+    //         $this->load->view("json",$data);
+    //     }
+   }
+   public function submitContactForm()
+{
+    $data = json_decode(file_get_contents('php://input'), true);
+    $name=$data['name'];
+    $email=$data['email'];
+    $company=$data['company'];
+    $phone=$data['phone'];
+    $message=$data['message'];
+    $file=$data['file'];
+    $tickettype=$data['tickettype'];
+    if(empty($data)){
+    $data['message']=0;
+    }
+    else{
+    $data['message']=$this->form_model->submitContactForm($name,$email,$company,$phone,$message,$file,$tickettype);
+    }
+    $this->load->view('json',$data);
+}
+public function getAllClientInfo()
+{
+    $data = json_decode(file_get_contents('php://input'), true);
+    $data['message']=$this->client_model->getAllClientInfo();
+    $this->load->view("json",$data);
+}
+public function getAllGalleryImages()
+{
+    $data = json_decode(file_get_contents('php://input'), true);
+    $data['message']=$this->gallerycategory_model->getAllGalleryImages();
+    $this->load->view("json",$data);
+}
+public function getpass()
+{
+    $this->load->library('encrypt');
+    $pass = $this->encrypt->encode('step@123');
+    $pass_decode = $this->encrypt->decode($pass);
+    echo "  pass ".$pass;
+    echo "  pass decode ".$pass_decode;
 }
 } ?>
